@@ -1,6 +1,8 @@
 from pathlib import Path
 import csv
 
+#function
+
 def pnl(file_path):
     
     with file_path.open(mode="r", encoding="UTF-8", newline="") as file:
@@ -9,20 +11,21 @@ def pnl(file_path):
 
         days = []
         values = []
-
+#replace $ and , so that code can read the numbes on its own
         for row in reader:
             days.append(int(row[0]))
             values.append(float(row[4].replace('$', '').replace(',', '')))
 
     increasing = all(values[i] > values[i-1] for i in range(1, len(values)))
     decreasing = all(values[i] < values[i-1] for i in range(1, len(values)))
-
+#if the value is higher than the day before across all values
     if increasing:
         highest_increment = max(values[i] - values[i-1] for i in range(1, len(values)))
         highest_increment_day = days[values.index(max(values)) - 1] + 1
         result = (f"[NET PROFIT SURPLUS] NET PROFIT ON EACH DAY IS HIGHER THAN THE PREVIOUS DAY \n"
                   f"[HIGHEST NET PROFIT SURPLUS]. The highest increment is {highest_increment} "
                   f"and it occurs between day {highest_increment_day-1} and day {highest_increment_day}.")
+    # if the value is lower than the day before across all values
     elif decreasing:
         highest_deficit = min(values[i] - values[i-1] for i in range(1, len(values)))
         highest_deficit_day = days[values.index(min(values)) - 1] + 1
@@ -36,9 +39,9 @@ def pnl(file_path):
             result = ""
             for deficit in deficits:
                 result += f"[NET PROFIT DEFICIT]Day: {deficit[0]}. AMOUNT: {deficit[1]}\n"
-            
+     #for top 3 deficits (scenario 3) sort highest to lowest, find top 3 highest       
             top_deficits = sorted(deficits, key=lambda x: x[1], reverse=False)[:3]
-            
+            #sorting of values from largest to smallest 
             for i, deficit in enumerate(top_deficits):
                 if i == 0:
                     result += f"[HIGHEST NET PROFIT DEFICIT] Day:{deficit[0]}. AMOUNT: {deficit[1]}\n"
