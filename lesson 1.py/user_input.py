@@ -1,0 +1,6 @@
+username = input("Enter your name : ")
+age = int(input("Enter your age : "))
+print(f"Your name is {username.upper()} and your age is {age/2}")
+input("Hit any key to continue...")
+print(type(username))
+print(type(age))

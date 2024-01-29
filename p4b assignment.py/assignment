@@ -1,0 +1,114 @@
+from pathlib import Path
+import csv
+
+#####  Store your, name, email, student_id and class_number as STRINGS #####
+#exercise = "Individual Assignment"
+#name = Jaden Quak
+#np_email = s10225042@connect.np.edu.sg
+#student_id = S10225042C
+#class_number = TC08
+
+#--------------- PART 1: This part of the program is completed for you --------------#
+
+# create a file path to csv file.
+fp = Path.cwd()/"deliveryRecords.csv"
+
+# read the csv file.
+with fp.open(mode="r", encoding="UTF-8", newline="") as file:
+    reader = csv.reader(file)
+    next(reader) # skip header
+
+    # create an empty list for delivery record
+    deliveryRecords=[] 
+
+    # append delivery record into the deliveryRecords list
+    for row in reader:
+        #get the driver id, sales, distance, and event type for each record
+        #and append to the deliveryRecords list
+        deliveryRecords.append([row[0],row[1],row[2],row[3]])   
+
+#---------------------------- PART 2: Insert your own code ---------------------------#
+# 1. Calculate the earing per delivery job, total earning, total sales
+# 2. Calculate the sales to earning ratio
+        
+#earning per delivery job = Basic fare per delivery + mileage rate + event rate 
+
+print(deliveryRecords)
+
+def earning_perjob(distance, event_type):
+    distancefloat = float(distance)
+    basic_fare = 2.5
+    mileagerate = 0
+    if distancefloat <= 5:
+        mileagerate += distancefloat * 0.1
+    elif distancefloat <= 12:
+        mileagerate += 5 * 0.1 + (distancefloat - 5) * 0.2
+    elif distancefloat <= 22:
+        mileagerate += 5 * 0.1 + 7 * 0.2 + (distancefloat - 12) * 0.3
+    else:
+        mileagerate += 5 * 0.1 + 7 * 0.2 + 10 * 0.3 + (distancefloat - 22) * 0.4
+    if event_type == "Regular": 
+        basic_fare += 0
+    elif event_type == "Express":
+        basic_fare += 1
+    elif event_type == "Premium":
+        basic_fare += 2
+    elif event_type == "Mart":
+        basic_fare += 3
+    return mileagerate + basic_fare
+
+for column in deliveryRecords:
+  distance = column[2]
+  event_type = column[3]
+  earningperjob = column[0], earning_perjob(distance, event_type)
+  print(earningperjob) 
+
+#total earnings below
+
+def calculate_sum(sales):
+    driver_sums = {}
+    for sale in sales:
+        driver, amount = sale
+        if driver in driver_sums:
+            driver_sums[driver] += amount
+        else:
+            driver_sums[driver] = amount
+    return driver_sums
+
+sales = [['DRI04', 6.38], ['DRI05', 25.50], ['DRI01', 25.65], ['DRI05', 19.35], ['DRI02', 26.32], ['DRI05', 27.05], ['DRI01', 9.60], ['DRI03', 9.22], ['DRI03', 9.22], ['DRI04', 14.53], ['DRI02', 19.08], ['DRI02', 24.61], ['DRI03', 12.29], ['DRI05', 8.96], ['DRI01', 9.52], ['DRI04', 13.66], ['DRI02', 19.94], ['DRI03', 23.67], ['DRI04', 29.59], ['DRI02', 20.00], ['DRI03', 15.22]]
+
+sales_sums = calculate_sum(sales)
+
+for driver, amount in sales_sums.items():
+    print(f"The total sales for {driver} is {amount}.")
+
+def calculate_total_earning(deliveryRecords):
+    driver_earnings = {}
+    for column in deliveryRecords:
+        driver = column[0]
+        distance = column[2]
+        event_type = column[3]
+        earning = earning_perjob(distance, event_type)
+        if driver in driver_earnings:
+            driver_earnings[driver] += earning
+        else:
+            driver_earnings[driver] = earning
+    return driver_earnings
+
+total_earnings = calculate_total_earning(deliveryRecords)
+for driver, earning in total_earnings.items():
+    print(f'{driver}: {earning}')
+
+
+
+
+
+
+
+
+
+#---------------------------- PART 3: Insert your own code ---------------------------#
+# 1. Write the calculated info to a txt file. Name it as paymentSummary.txt.
+
+
+
