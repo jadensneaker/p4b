@@ -1,8 +1,0 @@
-Power Leopard Payment Summary
-==============================
-Driver ID, Total Sales, Total Earning, Sales to Earnings Ratio
-DRI01,290.92,132.90,2.19
-DRI02,200.10,86.50,2.31
-DRI03,260.36,118.10,2.20
-DRI04,157.13,81.50,1.93
-DRI05,208.30,83.00,2.51
